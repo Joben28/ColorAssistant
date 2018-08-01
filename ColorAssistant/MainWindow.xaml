@@ -1,0 +1,59 @@
+﻿<Window x:Class="ColorAssistant.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ColorAssistant"
+        xmlns:viewmodels="clr-namespace:ColorAssistant.ViewModels"
+        xmlns:views="clr-namespace:ColorAssistant.Views"
+        mc:Ignorable="d"
+        Title="Color Assistant" Height="360" Width="570" ResizeMode="NoResize" Icon="1492319908_color-line.ico">
+    <Window.DataContext>
+        <viewmodels:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:PresenterViewModel}">
+            <views:TextureView/>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Menu DataContext="{Binding Menu}">
+                <Menu.Items>
+                    <MenuItem Header="File">
+                        <MenuItem Header="New Collection" Command="{Binding File.NewCollectionCommand}"/>
+                        <MenuItem Header="Open Collection..." Command="{Binding File.LoadCollectionCommand}"/>
+                        <MenuItem Header="Save Collection" Command="{Binding File.SaveCollectionCommand}"/>
+                        <MenuItem Header="Save Collection As..." Command="{Binding File.SaveCollectionAsCommand}"/>
+                        <MenuItem Header="Export Collection" Command="{Binding File.ExportCollectionCommand}"/>
+                        <MenuItem Header="Exit" Command="{Binding File.ExitCommand}"/>
+                    </MenuItem>
+
+                    <MenuItem Header="Edit">
+                        <MenuItem Header="Add" Command="{Binding Edit.AddPresenterCommand}"/>
+                        <MenuItem Header="Remove" Command="{Binding Edit.RemovePresenterCommand}" CommandParameter="{Binding ElementName=ColorListView, Path=SelectedItem}"/>
+                    </MenuItem>
+                </Menu.Items>
+            </Menu>
+        </ToolBar>
+        
+        <DockPanel DockPanel.Dock="Bottom">
+            <ListView x:Name="ColorListView" DockPanel.Dock="Left" Width="200" Padding="5" ItemsSource="{Binding Presenters}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Left" Width="50" Height="50" Background="{Binding Texture.Brush}"/>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Texture.FileName}"/>
+                                <TextBlock Text="{Binding Texture.Brush}"/>
+                                <TextBlock Text="{Binding Texture.ARGBString}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <UserControl DockPanel.Dock="Right" Content="{Binding ElementName=ColorListView, Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+
+    </DockPanel>
+</Window>

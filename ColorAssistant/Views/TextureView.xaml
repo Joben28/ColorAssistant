@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="ColorAssistant.Views.TextureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ColorAssistant.Views"
+             xmlns:viewmodels="clr-namespace:ColorAssistant.ViewModels"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <d:DesignPeroperties.DataContext>
+        <viewmodels:PresenterViewModel/>
+    </d:DesignPeroperties.DataContext>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.Column="0">
+            <StackPanel Width="128" Height="128" Background="{Binding Texture.Brush}">
+
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+            <StackPanel DockPanel.Dock="Bottom">
+                <TextBlock Text="Hex"/>
+                <TextBox IsReadOnly="True" Text="{Binding Texture.Brush}"/>
+                <TextBlock Text="ARGB"/>
+                <TextBox IsReadOnly="True"  Text="{Binding Texture.ARGBString, Mode=OneWay}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        
+        <DockPanel Grid.Row="0" Grid.Column="1" Margin="5">
+            <StackPanel DockPanel.Dock="Top">
+                <DockPanel>
+                    <TextBlock>A</TextBlock>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Texture.A}"/>
+                    <Slider Minimum="0" Maximum="255" Value="{Binding Texture.A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock>R</TextBlock>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Texture.R}"/>
+                    <Slider Minimum="0" Maximum="255" Value="{Binding Texture.R, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock>G</TextBlock>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Texture.G}"/>
+                    <Slider Minimum="0" Maximum="255" Value="{Binding Texture.G, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock>B</TextBlock>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Texture.B}"/>
+                    <Slider Minimum="0" Maximum="255" Value="{Binding Texture.B, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+                <Button Command="{Binding RandomColorCommand}" Background="WhiteSmoke" >Random Color</Button>
+                <Button Command="{Binding GetColorCommand}" Background="WhiteSmoke" >Copy Pixel on Screen</Button>
+                <TextBlock>Left CTRL + C to copy</TextBlock>
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <TextBlock>File Name</TextBlock>
+            <DockPanel>
+                <ComboBox x:Name="extensionCombo" Background="WhiteSmoke" DockPanel.Dock="Right" SelectedItem="{Binding Texture.Extension, Mode=TwoWay}">
+                    <ComboBox.Items>
+                        <System:String>.PNG</System:String>
+                        <System:String>.JPEG</System:String>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBox Text="{Binding Texture.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="fileNameBox" />
+            </DockPanel>
+            <TextBlock>File Path</TextBlock>
+            <DockPanel>
+                <Button Command="{Binding OpenFileDialogCommand}" Background="WhiteSmoke" DockPanel.Dock="Right" Padding="10,0">...</Button>
+                <TextBox IsReadOnly="True" Text="{Binding Texture.ExportPath}" />
+            </DockPanel>
+            <Button Command="{Binding SaveColorCommand}" Background="WhiteSmoke" >
+                Export
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
